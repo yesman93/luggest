@@ -1,0 +1,8 @@
+{
+  "name": "luggest",
+  "version": "1.0.0",
+  "description": "Lightweight autocomplete utility in pure JS",
+  "main": "src/luggest.js",
+  "author": "Tomas Bradle",
+  "license": "MIT"
+}

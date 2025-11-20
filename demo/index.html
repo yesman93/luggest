@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Luggest Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Luggest CSS -->
+    <link rel="stylesheet" href="../src/luggest.css">
+
+    <!-- Luggest JS -->
+    <script type="text/javascript" src="../src/luggest.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-block {
+            margin-bottom: 40px;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .note {
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Luggest Demo</h1>
+<p>A lightweight autocomplete library in pure JavaScript.</p>
+
+<hr>
+
+<div class="demo-block">
+    <h2>Static Array Example</h2>
+
+    <input type="text" id="cities" placeholder="Start typing a city...">
+    <div class="note">Source: simple array</div>
+
+    <script>
+
+        const cityList = [
+            'New York',
+            'Los Angeles',
+            'Chicago',
+            'Toronto',
+            'Vancouver',
+            'Mexico City',
+            'São Paulo',
+            'Rio de Janeiro',
+            'Buenos Aires',
+            'Santiago',
+            'London',
+            'Manchester',
+            'Birmingham',
+            'Paris',
+            'Marseille',
+            'Lyon',
+            'Berlin',
+            'Munich',
+            'Hamburg',
+            'Frankfurt',
+            'Rome',
+            'Milan',
+            'Naples',
+            'Madrid',
+            'Barcelona',
+            'Valencia',
+            'Lisbon',
+            'Porto',
+            'Zurich',
+            'Geneva',
+            'Vienna',
+            'Brussels',
+            'Amsterdam',
+            'Rotterdam',
+            'Copenhagen',
+            'Stockholm',
+            'Oslo',
+            'Helsinki',
+            'Warsaw',
+            'Prague',
+            'Budapest',
+            'Bratislava',
+            'Dubai',
+            'Istanbul',
+            'Tokyo',
+            'Osaka',
+            'Seoul',
+            'Beijing',
+            'Shanghai',
+            'Hong Kong',
+            'Singapore',
+            'Bangkok',
+            'Jakarta',
+            'Sydney',
+            'Melbourne',
+            'Auckland',
+            'Cape Town',
+            'Johannesburg',
+            'Cairo'
+        ];
+
+        // Initialize Luggest
+        document.addEventListener('DOMContentLoaded', function () {
+            Luggest.init('#cities', {
+                source: cityList,
+                min_length: 1,
+                on_select: function (el, item) {
+                    console.log('Selected city:', item);
+                }
+            });
+        });
+    </script>
+</div>
+
+<hr>
+
+<div class="demo-block">
+    <h2>Remote URL Example</h2>
+
+    <input type="text" id="remote" placeholder="Type to load from a fake API">
+    <div class="note">Source: mock URL returning JSON</div>
+
+    <script>
+        /**
+         * Mock “API” endpoint for demonstration.
+         * When Luggest calls /mock-api?term=xxx,
+         * we intercept it and return filtered data.
+         */
+        const mockData = [
+            { value: 'apple', label: 'Apple', metadata: { type: 'fruit' }},
+            { value: 'banana', label: 'Banana', metadata: { type: 'fruit' }},
+            { value: 'blueberry', label: 'Blueberry', metadata: { type: 'fruit' }},
+            { value: 'carrot', label: 'Carrot', metadata: { type: 'vegetable' }},
+            { value: 'cucumber', label: 'Cucumber', metadata: { type: 'vegetable' }}
+        ];
+
+        // Intercept fetch requests for demonstration
+        const originalFetch = window.fetch;
+        window.fetch = function (url, opts) {
+            if (url.startsWith('/mock-api')) {
+                const term = new URL(url, location.href).searchParams.get('term') || '';
+                const t = term.toLowerCase();
+
+                const result = mockData.filter(item =>
+                    item.label.toLowerCase().includes(t) ||
+                    item.value.toLowerCase().includes(t)
+                );
+
+                return Promise.resolve(new Response(JSON.stringify(result), {
+                    headers: { "Content-Type": "application/json" }
+                }));
+            }
+            return originalFetch(url, opts);
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            Luggest.init('#remote', {
+                source: '/mock-api',
+                min_length: 0,      // Show all on focus
+                max_results: 10,
+                on_open: function () {
+                    console.log('Remote suggestions opened.');
+                },
+                on_select: function (el, item) {
+                    console.log('Selected from remote:', item);
+                }
+            });
+        });
+    </script>
+</div>
+
+</body>
+</html>
