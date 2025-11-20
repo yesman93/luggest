@@ -4,8 +4,5 @@
   "description": "Lightweight autocomplete utility in pure JS",
   "main": "src/luggest.js",
   "author": "Tomas Bradle",
-  "license": "MIT",
-  "devDependencies": {
-    "terser": "^5.44.1"
-  }
+  "license": "MIT"
 }

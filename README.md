@@ -3,7 +3,7 @@
 # Luggest
 
 ![license](https://img.shields.io/badge/license-MIT-green)
-![size](https://img.shields.io/badge/size-~2KB-blue)
+![size](https://img.shields.io/badge/size-~8KB-blue)
 ![js](https://img.shields.io/badge/vanilla-JS-orange)
 
 
