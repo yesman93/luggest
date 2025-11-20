@@ -1,5 +1,12 @@
 # Luggest
 
+# Luggest
+
+![license](https://img.shields.io/badge/license-MIT-green)
+![size](https://img.shields.io/badge/size-~2KB-blue)
+![js](https://img.shields.io/badge/vanilla-JS-orange)
+
+
 **Luggest** is a lightweight, dependency-free autocomplete library for plain JavaScript.
 
 - No jQuery
